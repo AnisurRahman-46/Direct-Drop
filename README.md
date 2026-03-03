@@ -15,8 +15,8 @@ Instead of taking the easy route and importing pre-built libraries, I am buildin
 * **LAN Security & Least Privilege:** Keeping the application safely sandboxed in user-space without forcing administrative firewall overrides.
 * **Asynchronous Data Transfer:** Managing chunked file reading to prevent RAM overflow when transferring massive files.
 
-## 📅 Development Phases
-* **Phase 1:** *[Dropping Tomorrow!]*
+## 🗓️ Development Phases
+* **Phase 1:** *[Dropping Today!]*
 * **Phase 2:** *Coming soon...*
 * **Phase 3:** *Coming soon...*
 * **Phase 4:** *Coming soon...*
