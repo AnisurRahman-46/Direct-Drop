@@ -18,22 +18,26 @@ Instead of taking the easy route and importing pre-built libraries, I am buildin
 ## 🗓️ Development Phases
 
 ## 🛠️ Phase 1: The Core Engine & Dynamic IP Routing
-**Objective:** Establish a purely native TCP web server and dynamically map the host's Local Area Network (LAN) architecture.
+**Objective:** Establish a purely native TCP web server, dynamically map the host's Local Area Network (LAN) architecture, and ensure stable port management.
 
 ### ⚙️ What We Built
-In this initial phase, I engineered the foundation of the Direct-Drop server. Instead of hardcoding IP addresses or relying on `localhost` (which mobile devices cannot reach), I built a dynamic routing function that automatically hunts down the host machine's true Wi-Fi IP address. I also implemented the Command Line Interface (CLI) to accept file paths and dynamically generate an ASCII QR code directly inside the terminal.
+In this initial phase, I engineered the foundation of the Direct-Drop server. Instead of hardcoding IP addresses or relying on `localhost` (which mobile devices cannot reach), I built a **dynamic routing** function that automatically hunts down the host machine's true Wi-Fi IP address. I also implemented a Command Line Interface (CLI) to accept file paths, dynamically generate an ASCII QR code, and secured the server's lifecycle to prevent port hanging.
 
 ### 🔍 How It Works (Under the Hood)
-1. **The CLI Trigger:** The user runs `python directdrop.py <filepath>`. The `argparse` library validates the file path.
-2. **The UDP Ping Trick:** The script creates a dummy UDP socket and attempts to connect to a public DNS server (`8.8.8.8`). Because it's UDP (connectionless), it doesn't actually send a packet over the internet; it simply forces the Windows OS to consult its internal routing table and reveal the active Private IP address being used for Wi-Fi. 
-3. **The Server Bootup:** The script binds Python's native `http.server` to that specific Private IP on Port 8080. 
-4. **The Handshake:** A QR code is mathematically generated using the `qrcode` library, encoding the `http://<IP>:8080` string and printing it to the terminal for the phone to scan.
+* **The CLI Trigger:** We used the `argparse` library **so that** the user can pass specific file paths directly via the terminal, allowing the script to instantly validate that the files actually exist before booting the server.
+  
+* **The UDP Ping Trick:** We created a dummy UDP socket and attempted a connection to a public DNS server (`8.8.8.8`) **so that** the Windows OS is forced to consult its internal routing table. This **safely** reveals the **active Private IP** address being used for Wi-Fi without actually sending a payload over the internet.
+* **The Server Bootup:** We bound Python's native `http.server` to that specific Private IP on Port 8080 **so that** external devices (like a phone) on the exact same Wi-Fi network can route traffic directly to the laptop.
+* **The QR Handshake:** We mathematically generated an ASCII QR code using the `qrcode` library and printed it to the terminal **so that** the user can instantly pair their phone to the server URL (`http://<IP>:8080/`) without manually typing IP addresses.
+* **The Port Reuse Fix:** We explicitly set `socketserver.TCPServer.allow_reuse_address = True` **so that** if the user stops the script and instantly restarts it, Windows immediately **frees up Port 8080 instead of crashing the application** with an "Address already in use" network error.
+* **The Graceful Shutdown:** We wrapped the server execution in a `try/except KeyboardInterrupt` block **so that** when the user presses `CTRL+C`, the server **securely** and cleanly closes the port, preventing silent "ghost" ports from continuously listening in the background.
 
 ### 🧠 Core Networking & Security Concepts Applied
 * **Socket Programming (UDP vs. TCP):** Exploited the connectionless nature of UDP to securely query the OS routing table without opening unnecessary outbound TCP streams.
-* **LAN Architecture & NAT:** Deepened understanding of Network Address Translation (NAT) by ensuring the server binds strictly to the internal Private IP (e.g., `192.168.x.x`) rather than the loopback address (`127.0.0.1`), allowing external LAN devices to route to it.
+  
+* **LAN Architecture & NAT:** Deepened understanding of Network Address Translation **(NAT)** by ensuring the server binds strictly to the internal Private IP (e.g., `192.168.x.x`) rather than the loopback address (`127.0.0.1`), allowing local peer-to-peer routing.
 * **Zero-Dependency System Design:** Bypassed massive frameworks like Flask. By using native `socketserver` and `http.server`, the application attack surface is drastically minimized, and the footprint stays incredibly lightweight.
-* **CLI UX Design:** Built a robust command-line argument parser that prevents the server from booting if invalid or malicious file paths are provided.
+* **Resource Management:** Ensured strict operating system compliance by writing explicit port-release commands and handling manual keyboard interrupts safely.
 
 
 
