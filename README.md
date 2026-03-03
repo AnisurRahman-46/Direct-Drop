@@ -42,7 +42,7 @@ In this initial phase, I engineered the foundation of the Direct-Drop server. In
 
 
 
-> * **Phase 2:** *Coming soon...*
+> * **Phase 2:** *Dropping Today...*
 > * **Phase 3:** *Coming soon...*
 >* **Phase 4:** *Coming soon...*
 >* **Phase 5:** *Coming soon...*
