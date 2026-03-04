@@ -40,9 +40,31 @@ In this initial phase, I engineered the foundation of the Direct-Drop server. In
 * **Resource Management:** Ensured strict operating system compliance by writing explicit port-release commands and handling manual keyboard interrupts safely.
 
 
+## 🛠️ Phase 2: The HTML Interface & "Security Jail" (Secure GET Requests)
+**Objective:** Override the default HTTP handler to serve a custom UI and rigorously protect the host machine against Directory Traversal attacks.
 
+### ⚙️ What We Built
+In Phase 2, I engineered the custom web interface and the download engine. Python’s default `http.server` is highly dangerous for file sharing because it automatically exposes your entire working directory to anyone on the network. To fix this, I subclassed the request handler, built a strict **"Security Jail"** to sandbox the application, and injected a native HTML/CSS UI directly into the server's response.
 
-> * **Phase 2:** *Dropping Today...*
+### 🔍 How It Works (Under the Hood)
+* **The Custom GET Handler:** We subclassed `SimpleHTTPRequestHandler` and overrode the `do_GET` method **so that** we could intercept every single incoming web request from the phone and apply our **own strict security routing** instead of letting Python auto-serve the entire `C:\` drive.
+  
+* **The Single-File UI Architecture:** We injected raw HTML and CSS directly as a UTF-8 encoded string **so that** the server serves a responsive, dark-mode user interface to the phone without relying on external static files, keeping the application completely zero-dependency.
+* **The URL Parser:** We utilized `urllib.parse` **so that** special characters, symbols, and spaces in filenames sent by the phone's browser are correctly decoded before the server attempts to locate them on the laptop's hard drive.
+* **The Security Jail (Whitelist Sandbox):** We implemented a strict `TARGET_FILES` dictionary mapping **so that** when a device requests a file, it is validated against an approved whitelist. If a hacker attempts a Path Traversal attack (e.g., requesting `../../Windows/System32/config/SAM`), the server instantly blocks it and throws a `403 Forbidden` or `404 Not Found` error.
+* **The Download Headers:** We manually injected explicit `Content-Disposition: attachment` and `Content-Length` HTTP headers into the response **so that** the mobile browser natively understands it is receiving a file download (triggering the OS progress bar) rather than attempting to play or display the raw file in a new browser tab.
+* **The Chunked Byte Stream:** We utilized a while loop with `f.read(1024 * 1024)` to stream the file in continuous 1MB blocks **so that** transferring a massive 4GB 4K video doesn't instantly overflow and crash the laptop's RAM.
+
+### 🧠 Core Networking & Cybersecurity Concepts Applied
+
+* **Directory Traversal Mitigation:** **Replaced** dangerous default file-serving behavior with strict server-side validation and dictionary whitelisting to sandbox the application.
+  
+* **HTTP Protocol Fundamentals:** Deep dive into how browsers interpret TCP headers (`Content-Type`, `Content-Disposition`) to trigger native operating system download behaviors.
+* **Memory Management (I/O Streams):** Engineered efficient chunked byte streaming to handle massive binary payloads without memory exhaustion.
+* **Secure UI Delivery:** **Bypassed** the need for external web directories by dynamically generating front-end code at runtime.
+
+---
+
 > * **Phase 3:** *Coming soon...*
 >* **Phase 4:** *Coming soon...*
 >* **Phase 5:** *Coming soon...*
