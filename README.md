@@ -65,7 +65,7 @@ In Phase 2, I engineered the custom web interface and the download engine. Pytho
 
 ---
 
-> * **Phase 3:** *Dropping Today...*
+> * **Phase 3:** *Dropping Now...*
 >* **Phase 4:** *Coming soon...*
 >* **Phase 5:** *Coming soon...*
 >* **Phase 6:** *Coming soon...*
