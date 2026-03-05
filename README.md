@@ -66,10 +66,34 @@ In Phase 2, I engineered the custom web interface and the download engine. Pytho
 ---
 
 ## 🛠️ Phase 3: The Upload Engine & Raw Multipart Parsing (Secure POST Requests)
-**Objective:** Implement secure two-way file transfer by engineering a custom HTTP POST handler to parse raw binary payloads directly from the TCP stream.
+**Objective:** Implement secure two-way file transfer by engineering a custom HTTP POST handler to parse raw binary payloads directly from the TCP stream and prevent file corruption.
 
 ### ⚙️ What We Built
-In Phase 3, I engineered the reverse pipeline: beaming files from the mobile device back to the host laptop. Native `http.server` does not support file uploads out-of-the-box. Instead of importing external libraries, I built a custom packet parser to intercept the HTTP POST request, strip the browser's metadata, identify the cryptographic boundary, and securely reconstruct the raw binary file onto the laptop's hard drive.
+In Phase 3, I engineered the reverse pipeline: beaming files from the mobile device back to the host laptop. Native `http.server` does not support file uploads out-of-the-box. Instead of importing external libraries, I built a custom packet parser to intercept the HTTP POST request, strip the browser's metadata, identify the **cryptographic** boundary, and securely reconstruct the raw binary file onto the laptop's hard drive **without data corruption**.
+
+### 🔍 How It Works (Under the Hood)
+* **The Custom POST Handler:** I overrode the `do_POST` method **so that** the server can actively intercept and process incoming HTML form submissions from the mobile device.
+  
+* **Strict Endpoint Routing:** I restricted the POST execution strictly to the `/upload` path and enforced a `403 Forbidden` response for all other routes **so that** malicious actors cannot blindly throw POST payloads at the root server or download endpoints.
+* **Dynamic Boundary Extraction:** I parsed the `Content-Type` header to extract the unique `boundary=` string **so that** the server knows exactly where the file's binary data begins and ends within the massive HTTP network packet.
+* **Raw Byte Reading:** We utilized `self.rfile.read(int(content_length))` **so that** the server pulls the exact number of bytes specified by the browser, preventing the socket from hanging indefinitely while waiting for non-existent data.
+* **Header & Payload Separation:** I manually split the raw byte stream at the `\r\n\r\n` (Carriage Return Line Feed) marker **so that** we could perfectly isolate the file's actual binary payload from the browser's metadata headers.
+* **Safe Header Decoding:** I decoded the multipart headers using `utf-8` with the `errors='ignore'` flag **so that** any maliciously crafted or corrupted bytes in the header block do not trigger a fatal `UnicodeDecodeError` and crash the application.
+* **Regex Filename Extraction:** I implemented the `re` (Regular Expression) module to search the raw header block for `filename="..."` **so that** the laptop securely saves the incoming payload with its original name and extension.
+* **Input Sanitization:** I wrapped the extracted filename in `os.path.basename()` **so that** a compromised phone or malicious actor cannot send a file named `../../Windows/System32/malware.exe` to execute a reverse Path Traversal attack against the host PC.
+* **Trailing Byte Trimming:** I explicitly stripped the trailing `\r\n` bytes from the end of the binary payload using array slicing (`file_bytes[:-2]`) **so that** uploaded files (especially sensitive formats like images or compiled binaries) **do not get corrupted** by leftover HTTP protocol artifacts.
+* **Dynamic Directory Routing:** We utilized `os.path.expanduser('~')` to dynamically resolve the host operating system's user profile **so that** incoming files are safely and predictably routed directly to the native `Downloads` folder, rather than dumping them haphazardly into the script's execution directory.
+* **The Acknowledgment Handshake:** I explicitly sent an HTTP 200 OK response and a plain-text confirmation back through the socket **so that** the mobile device's browser instantly knows the file was **safely received** and severs the connection cleanly without hanging.
+* **Fault Tolerance:** I wrapped the entire parsing engine in a strict `try/except` block returning a `400 Bad Request` **so that** if a network drop or malformed packet corrupts the upload, the server cleanly rejects it and stays online for the next request.
+
+### 🧠 Core Networking & Cybersecurity Concepts Applied
+* **HTTP Protocol Deep-Dive:** Gained hands-on experience with how modern browsers encode and transmit files using `multipart/form-data` and MIME boundaries.
+  
+* **Binary Data Stream Parsing & Integrity:** Engineered manual byte-level manipulation to separate application-layer headers from raw payload data while preserving file integrity.
+* **Reverse Path Traversal Mitigation:** Implemented strict server-side sanitization of user-controlled input (the uploaded filename) to protect the host operating system from arbitrary file writes.
+* **Server Resilience & Fault Tolerance:** Hardened the server against malformed packets and invalid routing attempts to ensure continuous uptime during file transfers.
+
+---
 
 >* **Phase 4:** *Coming soon...*
 >* **Phase 5:** *Coming soon...*
