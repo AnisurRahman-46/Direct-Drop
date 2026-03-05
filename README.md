@@ -65,7 +65,12 @@ In Phase 2, I engineered the custom web interface and the download engine. Pytho
 
 ---
 
-> * **Phase 3:** *Dropping Now...*
+## 🛠️ Phase 3: The Upload Engine & Raw Multipart Parsing (Secure POST Requests)
+**Objective:** Implement secure two-way file transfer by engineering a custom HTTP POST handler to parse raw binary payloads directly from the TCP stream.
+
+### ⚙️ What We Built
+In Phase 3, I engineered the reverse pipeline: beaming files from the mobile device back to the host laptop. Native `http.server` does not support file uploads out-of-the-box. Instead of importing external libraries, I built a custom packet parser to intercept the HTTP POST request, strip the browser's metadata, identify the cryptographic boundary, and securely reconstruct the raw binary file onto the laptop's hard drive.
+
 >* **Phase 4:** *Coming soon...*
 >* **Phase 5:** *Coming soon...*
 >* **Phase 6:** *Coming soon...*
