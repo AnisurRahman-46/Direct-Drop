@@ -98,6 +98,9 @@ In Phase 3, I engineered the reverse pipeline: beaming files from the mobile dev
 ## 🛠️ Phase 4: Asynchronous Telemetry & On-the-Fly Payload Compression (AJAX & ZIP)
 **Objective:** Implement real-time asynchronous upload tracking and engineer a dynamic, memory-safe ZIP compiler for multi-file network transfers.
 
+### ⚙️ What We Built
+In Phase 4, I solved two massive user-experience and backend infrastructure problems. First, I engineered an asynchronous JavaScript payload tracker to monitor byte-transfer rates in real-time, preventing the mobile browser from appearing "frozen" during massive uploads. Second, I built an on-the-fly ZIP compiler that intercepts multi-file download requests, compresses the assets into a temporary OS directory, streams the package over TCP, and instantly shreds the leftover cache to protect the host machine's hard drive from silent storage bloat.
+
 ---
 
 >* **Phase 5:** *Coming soon...*
