@@ -101,6 +101,26 @@ In Phase 3, I engineered the reverse pipeline: beaming files from the mobile dev
 ### ⚙️ What We Built
 In Phase 4, I solved two massive user-experience and backend infrastructure problems. First, I engineered an asynchronous JavaScript payload tracker to monitor byte-transfer rates in real-time, preventing the mobile browser from appearing "frozen" during massive uploads. Second, I built an on-the-fly ZIP compiler that intercepts multi-file download requests, compresses the assets into a temporary OS directory, streams the package over TCP, and instantly shreds the leftover cache to protect the host machine's hard drive from silent storage bloat.
 
+### 🔍 How It Works (Under the Hood)
+* **Asynchronous `XMLHttpRequest`:** We implemented raw AJAX via JavaScript's `XMLHttpRequest` and `FormData` **so that** the mobile browser can beam massive binary payloads to the laptop in the background without freezing the screen or forcing a clunky page reload.
+  
+* **Real-Time Byte Telemetry:** We attached an event listener to the `xhr.upload.progress` state **so that** the UI dynamically calculates `(evt.loaded / evt.total) * 100` and renders a live visual progress bar, providing critical network feedback during heavy data transfers.
+* **State-Based UI Color Coding:** We programmed the JavaScript to dynamically shift the progress bar's hex colors (Blue for uploading, Green for 200 OK success, Red for failure) **so that** the user instantly understands the HTTP response state without needing to read terminal logs.
+* **On-the-Fly ZIP Compilation:** We engineered a `/download_zip` endpoint using Python's native `zipfile` module **so that** when a user requests multiple files, the server dynamically bundles them into a single archive before streaming, drastically reducing the number of open TCP connections required.
+* **Deflated Network Compression:** We specifically configured the compiler with `zipfile.ZIP_DEFLATED` **so that** the data footprint is actively reduced before transmission, optimizing LAN bandwidth utilization.
+* **Host Privacy Preservation (Path Masking):** We mapped `arcname=fname` inside the `zipf.write()` command **so that** the archive only stores the raw filename, permanently preventing the host machine's absolute directory structure (e.g., `C:\Users\Name\Desktop\...`) from being exposed inside the ZIP file.
+* **Secure Temp Directory Routing:** We utilized `tempfile.gettempdir()` **so that** the massive temporary ZIP archive is safely constructed in the operating system's designated ephemeral storage, rather than cluttering the user's active working directory or the script's folder.
+* **Automated Cache Shredding:** We wrapped the ZIP stream in a strict `try/finally` block with `os.remove(temp_zip_path)` **so that** the archive is instantly and permanently deleted from the host machine the millisecond the network transfer completes or fails, preventing silent storage exhaustion (a common cause of local Denial of Service).
+* **Dynamic Payload Detection:** We embedded conditional logic (`if len(TARGET_FILES) > 1`) directly into the HTML generator **so that** the server intelligently analyzes the payload queue and only renders the "Download All (ZIP)" endpoint if it is mathematically necessary, keeping the UI clean.
+
+### 🧠 Core Networking & Cybersecurity Concepts Applied
+* **Asynchronous Network Telemetry:** Mastered background data streaming and real-time state calculation without interrupting the main UI thread.
+  
+* **Ephemeral Storage Management:** Engineered strict backend infrastructure to handle massive temporary file generation and automated deletion, protecting the host operating system from storage exhaustion.
+* **Bandwidth Optimization:** Implemented server-side compression algorithms to minimize payload weight across local network channels.
+* **Directory Structure Obfuscation:** Protected the host machine's internal file paths from being leaked to network peers during multi-file bundling.
+* **Dynamic System Integration:** Bridged frontend user actions directly to heavy backend file-system operations securely and efficiently.
+
 ---
 
 >* **Phase 5:** *Coming soon...*
