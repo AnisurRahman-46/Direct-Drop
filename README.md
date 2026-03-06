@@ -95,7 +95,11 @@ In Phase 3, I engineered the reverse pipeline: beaming files from the mobile dev
 
 ---
 
->* **Phase 4:** *Dropping Today....*
+## 🛠️ Phase 4: Asynchronous Telemetry & On-the-Fly Payload Compression (AJAX & ZIP)
+**Objective:** Implement real-time asynchronous upload tracking and engineer a dynamic, memory-safe ZIP compiler for multi-file network transfers.
+
+---
+
 >* **Phase 5:** *Coming soon...*
 >* **Phase 6:** *Coming soon...*
 
