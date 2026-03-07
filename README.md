@@ -123,8 +123,7 @@ In Phase 4, I solved two massive user-experience and backend infrastructure prob
 
 ---
 
->* **Phase 5:** *Dropping Today....*
->* **Phase 6:** *Coming soon...*
+ **Phase 5:**  Dropping the **Finale Phase** on 9th March 2026 with the **```.exe```** file for all of you. 
 
 ---
 *Engineered by **Anisur Rahman***
