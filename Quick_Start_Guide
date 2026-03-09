@@ -17,12 +17,12 @@ We are going to add Direct-Drop to your Windows "Send To" menu so you can instan
 
 ### 📱 3. How to Use It
 1. Right-click on any file (or multiple files) you want to send to your phone.
-2. Hover over **Send to** -> click **🚀 Direct-Drop**.
+2. Hover over **Send to** -> click **Direct-Drop**.
 3. A black terminal window will pop up generating a secure QR code.
 4. Scan the QR code with your phone's camera.
 5. Tap "Get" on your phone's screen to instantly download the file over your local Wi-Fi!
 
-*(To stop sharing, just close the black terminal window or press CTRL+C).*
+*(To stop sharing, just press CTRL+C).*
 
 ### ⚠️ Important Windows Security Note
 Because Direct-Drop is a brand new, custom-built application, **Windows Defender SmartScreen** might flag it and say "Windows protected your PC" the first time you run it. 
