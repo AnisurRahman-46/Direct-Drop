@@ -1,0 +1,32 @@
+## 🚀 Quick Start Guide (For Windows Users)
+Want to use Direct-Drop without looking at any code? Follow these simple steps to set up the ultimate right-click file transfer tool on your Windows machine.
+
+### 📥 1. Download
+1. Go to the [Releases page](../../releases) of this repository.
+2. Download the latest `directdrop.exe` file.
+3. Move this file into a safe, permanent folder on your laptop (e.g., `Documents/DirectDrop_App/`). *Do not leave it in your Downloads folder.*
+
+### ⚙️ 2. One-Time Setup (The Right-Click Hack)
+We are going to add Direct-Drop to your Windows "Send To" menu so you can instantly share files without opening any apps.
+
+1. Press `Windows Key + R` on your keyboard to open the Run box.
+2. Type `shell:sendto` and press Enter. A hidden folder will open.
+3. Open another window and find where you saved `directdrop.exe`.
+4. **Hold down the `Alt` key**, then click and drag `directdrop.exe` into that hidden `SendTo` folder. This creates a shortcut.
+5. Rename the new shortcut to something cool, like `🚀 Direct-Drop`.
+
+### 📱 3. How to Use It
+1. Right-click on any file (or multiple files) you want to send to your phone.
+2. Hover over **Send to** -> click **Direct-Drop**.
+3. A black terminal window will pop up generating a secure QR code.
+4. Scan the QR code with your phone's camera.
+5. Tap "Get" on your phone's screen to instantly download the file over your local Wi-Fi!
+
+*(To stop sharing, just press CTRL+C).*
+
+### ⚠️ Important Windows Security Note
+Because Direct-Drop is a brand new, custom-built application, **Windows Defender SmartScreen** might flag it and say "Windows protected your PC" the first time you run it. 
+* This is completely normal for independent software. 
+* Simply click **"More info"** and then **"Run anyway"**. 
+
+---
