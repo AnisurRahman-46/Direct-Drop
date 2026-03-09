@@ -1,7 +1,6 @@
 # ⚡ Direct-Drop
 **A native, zero-dependency LAN file-sharing architecture.**
 
-> **Status:** 🟢 Completed & Deployed. 
 
 ## 🎯 What is Direct-Drop?
 Direct-Drop is a lightweight, cross-platform file transfer utility engineered from absolute scratch. The objective was to securely and instantly beam files between a Windows host and a mobile device over a local Wi-Fi network without relying on the internet, Bluetooth, or heavy third-party web frameworks (like Flask or Django). 
