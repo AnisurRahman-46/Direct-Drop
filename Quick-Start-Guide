@@ -2,7 +2,7 @@
 Want to use Direct-Drop without looking at any code? Follow these simple steps to set up the ultimate right-click file transfer tool on your Windows machine.
 
 ### 📥 1. Download
-1. Go to the [Releases page](../../releases) of this repository.
+1. Go to the [Releases page](https://github.com/AnisurRahman-46/Direct-Drop/releases/tag/v1.0.0) of this repository.
 2. Download the latest `directdrop.exe` file.
 3. Move this file into a safe, permanent folder on your laptop (e.g., `Documents/DirectDrop_App/`). *Do not leave it in your Downloads folder.*
 
