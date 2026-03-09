@@ -1,26 +1,30 @@
-# ⚡ Direct-Drop (🚧 Active Development)
+# ⚡ Direct-Drop
 **A native, zero-dependency LAN file-sharing architecture.**
 
-> **Status:** 🟢 Building in Public. I am developing this engine phase-by-phase and pushing daily updates. 
+> **Status:** 🟢 Completed & Deployed. 
 
 ## 🎯 What is Direct-Drop?
-Direct-Drop is a lightweight, cross-platform file transfer tool I am engineering from absolute scratch. The goal is to securely and instantly beam files between a Windows computer and a mobile device over a local Wi-Fi network without using the internet, Bluetooth, or any bloated third-party web frameworks (like Flask or Django). 
+Direct-Drop is a lightweight, cross-platform file transfer utility engineered from absolute scratch. The objective was to securely and instantly beam files between a Windows host and a mobile device over a local Wi-Fi network without relying on the internet, Bluetooth, or heavy third-party web frameworks (like Flask or Django). 
+
+With a strict focus on backend infrastructure and memory management, the final build features a concurrent multi-threaded server, on-the-fly ZIP compression, and is compiled into a standalone executable (`.exe`) natively hooked into the Windows "Send To" context menu for zero-friction execution.
 
 ## 🧠 Networking & Security Concepts Explored
-Instead of taking the easy route and importing pre-built libraries, I am building the core engine natively to deeply understand how computers talk to each other. Throughout this build, I am implementing:
+Instead of importing pre-built abstraction libraries, the core engine was built natively to deeply understand raw network communication and system architecture. Throughout this build, the following concepts were implemented:
 
-* **Socket Programming:** Establishing raw TCP connections between devices.
-* **Dynamic IP Routing:** Bypassing hardcoded IPs by scanning the local network configuration via UDP.
-* **Custom HTTP Packet Parsing:** Manually slicing and extracting binary file payloads from raw `multipart/form-data` streams.
-* **LAN Security & Least Privilege:** Keeping the application safely sandboxed in user-space without forcing administrative firewall overrides.
-* **Asynchronous Data Transfer:** Managing chunked file reading to prevent RAM overflow when transferring massive files.
+* **Socket Programming:** Establishing and maintaining raw TCP connections between local devices.
+* **Concurrency & Multi-Threading:** Utilizing `socketserver.ThreadingMixIn` to handle simultaneous multi-client connections and prevent network bottlenecks.
+* **Dynamic IP Routing:** Bypassing hardcoded IPs by scanning the local network configuration via UDP sockets.
+* **Custom HTTP Packet Parsing:** Manually slicing and extracting binary file payloads from raw `multipart/form-data` streams while stripping protocol artifacts.
+* **AppSec & Sandboxing:** Implementing strict dictionary whitelisting to mitigate Directory/Path Traversal attacks and keeping the application securely sandboxed in user-space.
+* **Memory Management:** Managing chunked byte-reading and ephemeral storage for ZIP compilation to prevent RAM overflow during massive file transfers.
+* **OS-Level Integration:** Mapping native Windows GUI actions directly to Python CLI arguments via a compiled standalone binary.
 
 ## 🗓️ Development Phases
 
 ## 🛠️ Phase 1: The Core Engine & Dynamic IP Routing
 **Objective:** Establish a purely native TCP web server, dynamically map the host's Local Area Network (LAN) architecture, and ensure stable port management.
 
-### ⚙️ What We Built
+### ⚙️ What I Built
 In this initial phase, I engineered the foundation of the Direct-Drop server. Instead of hardcoding IP addresses or relying on `localhost` (which mobile devices cannot reach), I built a **dynamic routing** function that automatically hunts down the host machine's true Wi-Fi IP address. I also implemented a Command Line Interface (CLI) to accept file paths, dynamically generate an ASCII QR code, and secured the server's lifecycle to prevent port hanging.
 
 ### 🔍 How It Works (Under the Hood)
@@ -43,7 +47,7 @@ In this initial phase, I engineered the foundation of the Direct-Drop server. In
 ## 🛠️ Phase 2: The HTML Interface & "Security Jail" (Secure GET Requests)
 **Objective:** Override the default HTTP handler to serve a custom UI and rigorously protect the host machine against Directory Traversal attacks.
 
-### ⚙️ What We Built
+### ⚙️ What I Built
 In Phase 2, I engineered the custom web interface and the download engine. Python’s default `http.server` is highly dangerous for file sharing because it automatically exposes your entire working directory to anyone on the network. To fix this, I subclassed the request handler, built a strict **"Security Jail"** to sandbox the application, and injected a native HTML/CSS UI directly into the server's response.
 
 ### 🔍 How It Works (Under the Hood)
@@ -68,7 +72,7 @@ In Phase 2, I engineered the custom web interface and the download engine. Pytho
 ## 🛠️ Phase 3: The Upload Engine & Raw Multipart Parsing (Secure POST Requests)
 **Objective:** Implement secure two-way file transfer by engineering a custom HTTP POST handler to parse raw binary payloads directly from the TCP stream and prevent file corruption.
 
-### ⚙️ What We Built
+### ⚙️ What I Built
 In Phase 3, I engineered the reverse pipeline: beaming files from the mobile device back to the host laptop. Native `http.server` does not support file uploads out-of-the-box. Instead of importing external libraries, I built a custom packet parser to intercept the HTTP POST request, strip the browser's metadata, identify the **cryptographic** boundary, and securely reconstruct the raw binary file onto the laptop's hard drive **without data corruption**.
 
 ### 🔍 How It Works (Under the Hood)
@@ -98,7 +102,7 @@ In Phase 3, I engineered the reverse pipeline: beaming files from the mobile dev
 ## 🛠️ Phase 4: Asynchronous Telemetry & On-the-Fly Payload Compression (AJAX & ZIP)
 **Objective:** Implement real-time asynchronous upload tracking and engineer a dynamic, memory-safe ZIP compiler for multi-file network transfers.
 
-### ⚙️ What We Built
+### ⚙️ What I Built
 In Phase 4, I solved two massive user-experience and backend infrastructure problems. First, I engineered an asynchronous JavaScript payload tracker to monitor byte-transfer rates in real-time, preventing the mobile browser from appearing "frozen" during massive uploads. Second, I built an on-the-fly ZIP compiler that intercepts multi-file download requests, compresses the assets into a temporary OS directory, streams the package over TCP, and instantly shreds the leftover cache to protect the host machine's hard drive from silent storage bloat.
 
 ### 🔍 How It Works (Under the Hood)
@@ -123,7 +127,35 @@ In Phase 4, I solved two massive user-experience and backend infrastructure prob
 
 ---
 
- **Phase 5:**  Dropping the **Finale Phase** on 9th March 2026 with the **```.exe```** file for all of you. 
+## 🛠️ Phase 5: Concurrency, The "Receive-Only" Engine & Native OS Integration
+**Objective:** Implement non-blocking multi-threaded network transfers, a robust standby mode for zero-file booting, and integrate the system directly into the Windows File Explorer via a standalone executable.
+
+### ⚙️ What I Built
+In this final phase, the server was upgraded to production-grade status. First, the single-thread network bottleneck was eliminated by engineering a concurrent, multi-threaded server class. Next, the application was engineered to function perfectly as a dedicated "Receive-Only" bridge when no files are explicitly queued. Finally, the UI branding was polished, the development environment was sanitized, the raw Python architecture was compiled into a standalone Windows executable, and the binary was hooked directly into the native OS right-click context menu for instantaneous, zero-navigation execution.
+
+### 🔍 How It Works (Under the Hood)
+* **The Multi-Threading Engine:** Injected Python's `socketserver.ThreadingMixIn` into a custom HTTP server class **so that** the application instantly spins up a new, independent background thread for every connected device, allowing multiple users to download massive payloads simultaneously without blocking or freezing the local network.
+  
+* **Zero-Argument CLI Patch:** Modified the `argparse` configuration from `nargs='+'` (one or more) to `nargs='*'` (zero or more) **so that** the application can be double-clicked and launched without any initial file inputs, entirely bypassing the fatal command-line parsing crash.
+* **Kill-Switch Removal:** Bypassed the `sys.exit(1)` termination block that previously triggered when `TARGET_FILES` was empty **so that** the server continues its boot sequence and safely binds to the network port purely as a listening receiver.
+* **Strict Environment Sanitization:** Explicitly uninstalled experimental cryptographic libraries via the terminal before the final compilation **so that** the production environment was perfectly restored, strictly adhering to the core "zero-dependency / no-pip" architectural philosophy.
+* **Clean Build Architecture:** Explicitly deleted the old `build`, `dist`, and `.spec` directories before the final compilation **so that** PyInstaller was forced to package the fresh multi-threaded logic rather than aggressively caching the outdated single-threaded architecture.
+* **Standalone Binary Compilation:** Utilized the `pyinstaller --onefile directdrop.py` command **so that** the entire Python runtime, local networking libraries, and the custom server script are permanently compressed down into a single, portable executable (`directdrop.exe`), completely removing the need for the end-user to have Python installed.
+* **Visible Console Architecture:** Intentionally omitted the `--noconsole` flag during compilation **so that** the Windows command prompt remains actively visible upon launch, ensuring the user can interact with the dynamically generated ASCII QR code and monitor real-time network transfer logs.
+* **OS Context Menu Integration (Send To):** Injected an application shortcut directly into the hidden Windows `shell:sendto` directory **so that** users can natively right-click any file within the Windows File Explorer to launch the server. 
+* **Native Argument Passing:** By utilizing the Send To menu, Windows natively intercepts the right-clicked file and passes its absolute path directly into the script's `argparse` `sys.argv` array **so that** the file is instantly and automatically pre-loaded into the payload queue without opening a terminal. 
+
+### 🧠 Core Networking & Cybersecurity Concepts Applied
+* **Asynchronous Concurrency:** Eliminated TCP socket bottlenecks by implementing thread-based request handling for simultaneous multi-client connections.
+  
+* **State-Driven Application Logic:** Managed dynamic backend routing and front-end rendering based entirely on payload queue states.
+* **Secure Environment Management:** Practiced strict dependency hygiene by removing unused cryptographic libraries to minimize the final binary's bloat and attack surface.
+* **Cross-Platform Portability (Deployment):** Engineered a friction-free deployment model via standalone binary compilation, drastically reducing the application's attack surface by hiding the source code.
+* **OS-Level System Hooks:** Integrated custom application execution directly into the native Windows Explorer shell environment without requiring administrative registry edits, successfully mapping GUI actions to CLI arguments.
+
 
 ---
+
 *Engineered by **Anisur Rahman***
+
+---
