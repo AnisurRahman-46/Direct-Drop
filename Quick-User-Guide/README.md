@@ -17,6 +17,7 @@ We are going to add Direct-Drop to your Windows "Send To" menu so you can instan
 5. Rename the new shortcut to something cool, like `🚀 Direct-Drop`.
 
 ### 📱 3. How to Use It
+***Make sure your Network Profile Type is set to **PRIVATE** for the moment***
 1. Right-click on any file (or multiple files) you want to send to your phone.
 2. Hover over **Send to** -> click **Direct-Drop**.
 3. A black terminal window will pop up generating a secure QR code.
