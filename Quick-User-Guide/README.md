@@ -14,7 +14,7 @@ We are going to add Direct-Drop to your Windows "Send To" menu so you can instan
 2. Type `shell:sendto` and press Enter. A hidden folder will open.
 3. Open another window and find where you saved `directdrop.exe`.
 4. **Hold down the `Alt` key**, then click and drag `directdrop.exe` into that hidden `SendTo` folder. This creates a shortcut.
-5. Rename the new shortcut to something cool, like `🚀 Direct-Drop`.
+5. Rename the new shortcut like `🚀 Direct-Drop`.
 
 ### 📱 3. How to Use It
 ***Make sure your Network Profile Type is set to **PRIVATE** for the moment***
